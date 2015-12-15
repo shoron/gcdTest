@@ -52,13 +52,22 @@
                                     <action selector="testDispatchSyncHandler:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yau-Vg-thR"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bv9-bI-Iuu">
+                                <rect key="frame" x="209" y="370" width="182" height="30"/>
+                                <state key="normal" title="test dispatch_group_async"/>
+                                <connections>
+                                    <action selector="testDispatchGroupAsyncHandler:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZLM-Fn-7nh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="XTX-TH-Ant" firstAttribute="centerX" secondItem="kIL-ya-kC1" secondAttribute="centerX" id="0bN-Fe-m6Z"/>
                             <constraint firstItem="p3M-pK-uM0" firstAttribute="centerX" secondItem="kIL-ya-kC1" secondAttribute="centerX" id="7cq-xv-v1Q"/>
                             <constraint firstItem="091-yc-uBb" firstAttribute="centerX" secondItem="kIL-ya-kC1" secondAttribute="centerX" id="B2Z-KG-XNE"/>
+                            <constraint firstItem="bv9-bI-Iuu" firstAttribute="top" secondItem="p3M-pK-uM0" secondAttribute="bottom" constant="30" id="LKg-QI-f9L"/>
                             <constraint firstItem="XTX-TH-Ant" firstAttribute="top" secondItem="8oj-Hg-wgP" secondAttribute="bottom" constant="30" id="Q58-x1-Eit"/>
+                            <constraint firstItem="bv9-bI-Iuu" firstAttribute="centerX" secondItem="kIL-ya-kC1" secondAttribute="centerX" id="Qn2-h6-QTb"/>
                             <constraint firstItem="8oj-Hg-wgP" firstAttribute="centerX" secondItem="kIL-ya-kC1" secondAttribute="centerX" id="YQi-Dg-Uzr"/>
                             <constraint firstItem="091-yc-uBb" firstAttribute="top" secondItem="XTX-TH-Ant" secondAttribute="bottom" constant="30" id="eRZ-ge-b9z"/>
                             <constraint firstItem="kIL-ya-kC1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="jZ9-8E-0fU"/>

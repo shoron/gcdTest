@@ -46,6 +46,10 @@
     [self testDispatchOnce];
 }
 
+- (IBAction)testDispatchGroupAsyncHandler:(id)sender {
+    [self testDispatchGroupAsync];
+}
+
 #pragma mark - Private Methods
 
 // 交叉创建 串行/并行队列
@@ -250,6 +254,100 @@
      *  备注
      *  
      *  dispatch_once 第一个参数必须是static的。传递一个非静态变量会crash。
+     */
+}
+
+- (void)testDispatchGroupAsync {
+    NSLog(@" ********** dispatch_group_async 测试开始 **********");
+    NSLog(@" 本次测试有一个串行队列一个并行队列，向串行队列中依次添加 AB 两个任务，向并行队列中依次添加 CD 两个任务。");
+    NSLog(@" ABCD 的运行时间分别为 3，7，5，2秒");
+    
+    NSDate *startDate = [NSDate date];
+    __block NSInteger tastNumber = 0;
+    
+    dispatch_queue_t serialQueue = dispatch_queue_create("serialQueue", DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t concurrentQueue = dispatch_queue_create("concurrentQueue", DISPATCH_QUEUE_CONCURRENT);
+    
+    dispatch_group_t group = dispatch_group_create();
+    
+
+    /**
+     *  将任务提交到 quque 中，同时加入到 group 中。
+     *  任务的执行方式是异步的。
+     */
+    dispatch_group_async(group, serialQueue, ^{
+        [NSThread sleepForTimeInterval:3];
+        NSDate *endDate = [NSDate date];
+        
+        NSLog(@" Task A: 完成。花费时间为 %f seconds 。当前线程为： %@ ",[endDate timeIntervalSinceDate:startDate],[NSThread currentThread]);
+        tastNumber++;
+        if (tastNumber == 4) {
+            NSDate *endDate = [NSDate date];
+            NSLog(@" ********** dispatch_group_async 测试完成. 所花时间一共为 %f ********** ",[endDate timeIntervalSinceDate:startDate]);
+        }
+    });
+    
+    dispatch_group_async(group, concurrentQueue, ^{
+        [NSThread sleepForTimeInterval:5];
+        NSDate *endDate = [NSDate date];
+        
+        NSLog(@" Task C: 完成。花费时间为 %f seconds 。当前线程为： %@ ",[endDate timeIntervalSinceDate:startDate],[NSThread currentThread]);
+        tastNumber++;
+        if (tastNumber == 4) {
+            NSDate *endDate = [NSDate date];
+            NSLog(@" ********** dispatch_group_async 测试完成. 所花时间一共为 %f ********** ",[endDate timeIntervalSinceDate:startDate]);
+        }
+    });
+    
+    dispatch_group_async(group, serialQueue, ^{
+        [NSThread sleepForTimeInterval:7];
+        NSDate *endDate = [NSDate date];
+        
+        NSLog(@" Task B: 完成。花费时间为 %f seconds 。当前线程为： %@ ",[endDate timeIntervalSinceDate:startDate],[NSThread currentThread]);
+        tastNumber++;
+        if (tastNumber == 4) {
+            NSDate *endDate = [NSDate date];
+            NSLog(@" ********** dispatch_group_async 测试完成. 所花时间一共为 %f ********** ",[endDate timeIntervalSinceDate:startDate]);
+        }
+    });
+    
+    dispatch_group_async(group, concurrentQueue, ^{
+        [NSThread sleepForTimeInterval:2];
+        NSDate *endDate = [NSDate date];
+        
+        NSLog(@" Task D: 完成。花费时间为 %f seconds 。当前线程为： %@ ",[endDate timeIntervalSinceDate:startDate],[NSThread currentThread]);
+        tastNumber++;
+        if (tastNumber == 4) {
+            NSDate *endDate = [NSDate date];
+            NSLog(@" ********** dispatch_group_async 测试完成. 所花时间一共为 %f ********** ",[endDate timeIntervalSinceDate:startDate]);
+        }
+    });
+    
+    /**
+     *  当 group 中观察的任务都执行完时，调用此方法
+     *
+     *  @param group       观察任务的group
+     *  @param serialQueue 任务所在的queue
+     *  @param ^           当group中所有的任务都完成时，所执行的动作。
+     *
+     *  @return
+     */
+    dispatch_group_notify(group, serialQueue, ^(){
+        NSDate *endDate = [NSDate date];
+        NSLog(@" ********** 串行队列所有任务已经完成. 所花时间一共为 %f ********** ",[endDate timeIntervalSinceDate:startDate]);
+    });
+    
+    dispatch_group_notify(group, concurrentQueue, ^(){
+        NSDate *endDate = [NSDate date];
+        NSLog(@" ********** 并行队列所有任务已经完成. 所花时间一共为 %f ********** ",[endDate timeIntervalSinceDate:startDate]);
+    });
+    
+    /**
+     *  备注：
+     *
+     *  1: 当groud中的任务存在于多个队列中的时候，调用notify时，把其中一个queue传递进去即可。
+     *     所以，测试例子中的最后两个notifiy。有一个就够了而且也不用 taskNumber 来判断任务是否完成了。
+     *  2: dispatch_group_async 是异步的。所以会分别跟踪每一个任务。
      */
 }
 
