@@ -343,11 +343,24 @@
     });
     
     /**
+     *  同步等待 group 中的所有任务完成。
+     */
+//    if (dispatch_group_wait(group, DISPATCH_TIME_FOREVER) == 0) {
+//        NSDate *endDate = [NSDate date];
+//        NSLog(@" ********** 串行队列所有任务已经完成. 所花时间一共为 %f ********** ",[endDate timeIntervalSinceDate:startDate]);
+//    } else {
+//        
+//    }
+    NSLog(@"testDispatchGroupAsync 结束");
+    
+    /**
      *  备注：
      *
      *  1: 当groud中的任务存在于多个队列中的时候，调用notify时，把其中一个queue传递进去即可。
      *     所以，测试例子中的最后两个notifiy。有一个就够了而且也不用 taskNumber 来判断任务是否完成了。
      *  2: dispatch_group_async 是异步的。所以会分别跟踪每一个任务。
+     *  3: dispatch_group_notify 和 if (dispatch_group_wait(group, DISPATCH_TIME_FOREVER) == 0) 作用是相等的。
+     *     不同点是，dispatch_group_notify 是异步的，不会阻塞线程。dispatch_group_wait 是同步的，是阻塞当前线程的。
      */
 }
 
