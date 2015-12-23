@@ -351,6 +351,8 @@
 //    } else {
 //        
 //    }
+    
+    // 可以通过这个log打印的时间，来判断 dispatch_group_wait 和 dispatch_group_notify 是同步还是异步
     NSLog(@"testDispatchGroupAsync 结束");
     
     /**
